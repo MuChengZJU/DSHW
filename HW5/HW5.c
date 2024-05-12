@@ -31,11 +31,6 @@ typedef struct {
     int mu, nu, tu;
 } CrossList;
 
-/**
- * @brief 
- * 
- * @return int 
- */
 int createCrossList(CrossList *Matrix);
 
 int printCrossList(CrossList *Matrix);
@@ -115,13 +110,12 @@ int printCrossList(CrossList *Matrix) {
         OLink p = Matrix->rhead[i];
         for (int j = 0; j < Matrix->nu; j++) {
             if (p != NULL && p->j == j) {
-                printf("%lf ", p->e);
+                if (p->e != 0) {
+                    printf("%d, %d, %lf\n", p->i, p->j, p->e);
+                }
                 p = p->right;
-            } else {
-                printf("0 ");
             }
         }
-        printf("\n");
     }
 }
 

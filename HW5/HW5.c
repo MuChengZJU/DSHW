@@ -31,21 +31,73 @@ typedef struct {
     int mu, nu, tu;
 } CrossList;
 
+typedef char AtomType; // 原子类型定义为cahr*
+
+// 广义表的头尾链表存储表示
+typedef enum {ATOM, LIST} ElemTag;
+// ATOM==0：原子，LIST==1：子表
+
+typedef struct GLNode {
+    ElemTag tag;
+    // 公共部分，用于区分原子结点和表结点
+    union {
+        // 原子结点和表结点的联合部分
+        AtomType atom;
+        // atom是原子结点的值域，AtomType由typedef char 定义
+        struct {
+            struct GLNode *hp, *tp;
+        } ptr;
+        // ptr是表结点的指针域，prt.hp和ptr.tp分别指向表头和表尾
+    };
+} *GList, GLNode; // 广义表类型
+
 int createCrossList(CrossList *Matrix);
 
 int printCrossList(CrossList *Matrix);
 
 int destroyCrossList(CrossList *Matrix);
 
+int createGList(GList L, char *Str);
 int main() {
-    // 5.26 
-    // 以三元组形式输出用十字链表表示的稀疏矩阵中非零元素及其下标的算法
-    CrossList Matrix;
-    createCrossList(&Matrix);
-    printCrossList(&Matrix);
-    destroyCrossList(&Matrix);
+    int choice = 0;
+    do {
+        // Menu
+        printf("Please choose the function you want to test:\n");
+        printf("1. 5.26\n");
+        printf("2. 5.33\n");
+        printf("0. Exit\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                // 5.26 
+                // 以三元组形式输出用十字链表表示的稀疏矩阵中非零元素及其下标的算法
+                // ERROR: INDEX STARTS FROM 0!!!
+                {
+                    CrossList Matrix;
+                    createCrossList(&Matrix);
+                    printCrossList(&Matrix);
+                    destroyCrossList(&Matrix);
+                }
+                break;
+            case 2:
+                // 5.33
+                // 递归算法，输出广义表中所有原子项及其所在的层次
+                {
+                    char *str = "(a,(b,c),d,(e,(f),g))";
+                    GList L;
+                    createGList(L, str);
+                    printf("The atoms and their levels are:\n");
+                }   
+                break;
+            case 0:
+                printf("Exit!\n");
+                break;
+            default:
+                printf("Invalid choice!\n");
+                break;
+        }
+    } while (choice != 0);
 
-    
 
     return 0;
 }
@@ -142,4 +194,38 @@ int destroyCrossList(CrossList *Matrix) {
     }
     free(Matrix->rhead);
     free(Matrix->chead);
+}
+
+int createGList(GList L, char *str) {
+    if (str[2] == '\0') { // Empty String "()"
+        L = NULL;
+        return 1;
+    } else {
+        L = (GList)malloc(sizeof(GLNode));
+        L->tag = LIST;
+        GList p = L;
+        // Remove brackets of Str to sub
+        char *sub = (char *)malloc(strlen(str-2) * sizeof(char));
+        strncpy(sub, str+1, strlen(str-2));
+
+        do {
+            // Take out hsub before ',' from sub
+            char *hsub = strtok(sub, ",");
+            // Create GList p->ptr.hp from hsub
+            if (strlen(hsub) == 1) {
+                p->ptr.hp = (GList)malloc(sizeof(GLNode));
+                p->ptr.hp->tag = ATOM;
+                p->ptr.hp->atom = *hsub;
+            } else {
+                createGList(p->ptr.hp, hsub); // Recursive call
+            }
+
+            if (strlen(sub)) {
+                p->ptr.tp = (GList)malloc(sizeof(GLNode));
+                p=p->ptr.tp;
+            }
+
+        } while (strlen(sub));
+        p->ptr.tp = NULL; // Tail node is NULL
+    } 
 }

@@ -38,10 +38,14 @@ int printCrossList(CrossList *Matrix);
 int destroyCrossList(CrossList *Matrix);
 
 int main() {
+    // 5.26 
+    // 以三元组形式输出用十字链表表示的稀疏矩阵中非零元素及其下标的算法
     CrossList Matrix;
     createCrossList(&Matrix);
     printCrossList(&Matrix);
     destroyCrossList(&Matrix);
+
+    
 
     return 0;
 }

@@ -57,6 +57,7 @@ int createGList(GList L, char *str) {
 
 void splitGList(char** sub, char** hsub) {
     int numBranket = 0;
+    int flag = 0;
     for (int i = 0; i < strlen(*sub); i++) {
         if ((*sub)[i] == '(') {
             numBranket++;
@@ -68,8 +69,14 @@ void splitGList(char** sub, char** hsub) {
             strncpy(*hsub, *sub, i+1);
             (*hsub)[i] = '\0';
             *sub = *sub + i + 1;
+            flag = 1;
             break;
         }
+    }
+    if (flag == 0) {
+        *hsub = (char *)malloc((strlen(*sub)+1) * sizeof(char));
+        strcpy(*hsub, *sub);
+        *sub = *sub + strlen(*sub);
     }
 }
 

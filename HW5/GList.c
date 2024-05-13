@@ -31,10 +31,16 @@ int createGList(GList L, char *str) {
 
         do {
             // Take out hsub before ',' from sub
-            char subCopy[strlen(sub) + 1];
-            strcpy(subCopy, sub);
-            subCopy[strlen(sub)] = '\0';
-            char *hsub = strtok(subCopy, ",");
+            char* hsub = NULL;
+            char *commaPos = strchr(sub, ',');
+            if (commaPos != NULL) {
+                *commaPos = '\0';  // ½«¶ººÅÌæ»»Îª×Ö·û´®½áÊø·û
+                hsub = sub;  // hsub ´æ´¢¶ººÅÇ°µÄ²¿·Ö
+                sub = commaPos + 1;  // sub ´æ´¢¶ººÅºóµÄ²¿·Ö
+            } else {
+                hsub = sub;
+                sub = sub + strlen(sub);  // sub ´æ´¢¿Õ×Ö·û´®
+            }
             if (hsub == NULL) {
                 printf("hsub is NULL\n");
                 return 1;

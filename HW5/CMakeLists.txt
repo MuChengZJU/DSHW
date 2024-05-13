@@ -4,6 +4,10 @@ project(HW5)
 # Add your source files here
 set(SOURCES
     HW5.c
+    CrossList.h
+    CrossList.c
+    GList.h
+    GList.c
 )
 
 # Add your header files here

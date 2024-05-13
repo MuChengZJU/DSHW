@@ -30,22 +30,11 @@ int createGList(GList L, char *str) {
         printf("sub: %s\n", sub);
 
         do {
-            // Take out hsub before ',' from sub
-            char* hsub = NULL;
-            char *commaPos = strchr(sub, ',');
-            if (commaPos != NULL) {
-                *commaPos = '\0';  // ½«¶ººÅÌæ»»Îª×Ö·û´®½áÊø·û
-                hsub = sub;  // hsub ´æ´¢¶ººÅÇ°µÄ²¿·Ö
-                sub = commaPos + 1;  // sub ´æ´¢¶ººÅºóµÄ²¿·Ö
-            } else {
-                hsub = sub;
-                sub = sub + strlen(sub);  // sub ´æ´¢¿Õ×Ö·û´®
-            }
-            if (hsub == NULL) {
-                printf("hsub is NULL\n");
-                return 1;
-            }
+            // Split sub to hsub and sub
+            char *hsub = NULL;
+            splitGList(&sub, &hsub);
             printf("hsub: %s\n", hsub);
+            printf("sub: %s\n", sub);
             // Create GList p->ptr.hp from hsub
             if (strlen(hsub) == 1) {
                 p->ptr.hp = (GList)malloc(sizeof(GLNode));
@@ -57,12 +46,30 @@ int createGList(GList L, char *str) {
 
             if (strlen(sub) > 0) {
                 p->ptr.tp = (GList)malloc(sizeof(GLNode));
-                p=p->ptr.tp;
+                p = p->ptr.tp;
             }
 
         } while (strlen(sub) > 0);
 
         p->ptr.tp = NULL; // Tail node is NULL
     } 
+}
+
+void splitGList(char** sub, char** hsub) {
+    int numBranket = 0;
+    for (int i = 0; i < strlen(*sub); i++) {
+        if ((*sub)[i] == '(') {
+            numBranket++;
+        } else if ((*sub)[i] == ')') {
+            numBranket--;
+        }
+        if (numBranket == 0 && (*sub)[i] == ',') {
+            *hsub = (char *)malloc((i+1) * sizeof(char));
+            strncpy(*hsub, *sub, i+1);
+            (*hsub)[i] = '\0';
+            *sub = *sub + i + 1;
+            break;
+        }
+    }
 }
 

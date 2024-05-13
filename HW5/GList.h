@@ -35,4 +35,6 @@ typedef struct GLNode {
 
 int createGList(GList L, char *Str);
 
+void splitGList(char** sub, char** hsub);
+
 #endif // GLIST_H

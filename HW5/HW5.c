@@ -32,14 +32,14 @@ int main() {
                     CrossList Matrix;
                     createCrossList(&Matrix);
                     printCrossList(&Matrix);
-                    destroyCrossList(&Matrix);
+                    // destroyCrossList(&Matrix); //TODO: Memory Leak
                 }
                 break;
             case 2:
                 // 5.33
                 // 递归算法，输出广义表中所有原子项及其所在的层次
                 {
-                    char *str = "(a,(b,c),d,(e,(f),g))";
+                    char *str = "(a,(b,c))";
                     GList L;
                     createGList(L, str);
                     printf("The atoms and their levels are:\n");

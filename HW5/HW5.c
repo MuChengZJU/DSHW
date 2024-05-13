@@ -40,9 +40,9 @@ int main() {
                 // 递归算法，输出广义表中所有原子项及其所在的层次
                 {
                     char *str = "(a,(b,c))";
-                    GList L;
+                    GList L = NULL;
                     createGList(L, str);
-                    printf("The atoms and their levels are:\n");
+                    printGList(L, 0);
                 }   
                 break;
             case 0:

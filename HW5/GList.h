@@ -37,4 +37,6 @@ int createGList(GList L, char *Str);
 
 void splitGList(char** sub, char** hsub);
 
+void printGList(GList L, int d);
+
 #endif // GLIST_H

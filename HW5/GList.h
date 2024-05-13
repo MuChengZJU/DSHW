@@ -33,7 +33,7 @@ typedef struct GLNode {
 } *GList, GLNode; // 广义表类型
 
 
-int createGList(GList *L, char *Str);
+void createGList(GList *L, char *Str);
 
 void splitGList(char** sub, char** hsub);
 

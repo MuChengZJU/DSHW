@@ -14,12 +14,11 @@
 
 #include "GList.h"
 
-int createGList(GList *L, char *str)
+void createGList(GList *L, char *str)
 {
     if (str[2] == '\0')
     { // Empty String "()"
         *L = NULL;
-        return 1;
     }
     else
     {
@@ -30,15 +29,16 @@ int createGList(GList *L, char *str)
         char *sub = (char *)malloc((strlen(str) - 1) * sizeof(char));
         strncpy(sub, str + 1, strlen(str) - 2);
         sub[strlen(str) - 2] = '\0';
-        printf("sub: %s\n", sub);
+        // printf("sub: %s\n", sub);
 
         do
         {
+            p->tag = LIST;
             // Split sub to hsub and sub
             char *hsub = NULL;
             splitGList(&sub, &hsub);
-            printf("hsub: %s\n", hsub);
-            printf("sub: %s\n", sub);
+            // printf("hsub: %s\n", hsub);
+            // printf("sub: %s\n", sub);
             // Create GList p->ptr.hp from hsub
             if (strlen(hsub) == 1)
             {

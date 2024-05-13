@@ -14,18 +14,18 @@
 
 #include "GList.h"
 
-int createGList(GList L, char *str)
+int createGList(GList *L, char *str)
 {
     if (str[2] == '\0')
     { // Empty String "()"
-        L = NULL;
+        *L = NULL;
         return 1;
     }
     else
     {
-        L = (GList)malloc(sizeof(GLNode));
-        L->tag = LIST;
-        GList p = L;
+        *L = (GList)malloc(sizeof(GLNode));
+        (*L)->tag = LIST;
+        GList p = *L;
         // Remove brackets of Str to sub
         char *sub = (char *)malloc((strlen(str) - 1) * sizeof(char));
         strncpy(sub, str + 1, strlen(str) - 2);
@@ -48,7 +48,7 @@ int createGList(GList L, char *str)
             }
             else
             {
-                createGList(p->ptr.hp, hsub); // Recursive call
+                createGList(&(p->ptr.hp), hsub); // Recursive call
             }
 
             if (strlen(sub) > 0)
@@ -96,14 +96,13 @@ void splitGList(char **sub, char **hsub)
 }
 
 void printGList(GList L, int d) {
-    int i = d;
     if (L) {
         if (L->tag == ATOM) {
-            printf("%c:Layer%d\n", L->atom, i);
+            printf("%c:Layer%d\n", L->atom, d);
         }
         if (L->tag == LIST) {
-            printGList(L->ptr.hp, i + 1);
-            printGList(L->ptr.tp, i);
+            printGList(L->ptr.hp, d + 1);
+            printGList(L->ptr.tp, d);
         }
     }
 }

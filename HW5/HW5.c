@@ -39,9 +39,11 @@ int main() {
                 // 5.33
                 // 递归算法，输出广义表中所有原子项及其所在的层次
                 {
-                    char *str = "(a,(b,c))";
-                    GList L = NULL;
-                    createGList(L, str);
+                    printf("Please input a general list:\n");
+                    char str[255];
+                    scanf("%s", str);
+                    GList L;
+                    createGList(&L, str);
                     printGList(L, 0);
                 }   
                 break;
